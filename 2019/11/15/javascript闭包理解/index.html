@@ -6,12 +6,15 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="HandheldFriendly" content="True">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta property="og:type" content="article">
+    <meta name="description" content="Javascript 变量作用域 全局作用域 函数作用域   在 js 中只有 2 种变量作用域，变量的查询会形成一条链式结构，这就形成了作用域链，全局作用域可以在任何地方访问到，然而函数作用域只能在函数内部访问到，外层无法访问； 1234567let a = 1;function fn() &amp;#123;  let b = 2;  console.log(a); &#x2F;&#x2F; = &amp;gt; 1;任何地方都">
+<meta name="keywords" content="javascript">
+<meta property="og:type" content="article">
 <meta property="og:title" content="javascript闭包理解">
 <meta property="og:url" content="git@github.com:zhaobo1&#x2F;zhaobo1.github.io.git&#x2F;2019&#x2F;11&#x2F;15&#x2F;javascript%E9%97%AD%E5%8C%85%E7%90%86%E8%A7%A3&#x2F;index.html">
 <meta property="og:site_name" content="求生之路">
+<meta property="og:description" content="Javascript 变量作用域 全局作用域 函数作用域   在 js 中只有 2 种变量作用域，变量的查询会形成一条链式结构，这就形成了作用域链，全局作用域可以在任何地方访问到，然而函数作用域只能在函数内部访问到，外层无法访问； 1234567let a = 1;function fn() &amp;#123;  let b = 2;  console.log(a); &#x2F;&#x2F; = &amp;gt; 1;任何地方都">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-11-15T01:48:07.373Z">
+<meta property="og:updated_time" content="2019-11-15T09:24:27.408Z">
 <meta name="twitter:card" content="summary">
     
     
@@ -96,7 +99,7 @@
 
     </div>
     <div id="toc">
-      
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Javascript-变量作用域"><span class="toc-number">1.</span> <span class="toc-text">Javascript 变量作用域</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#在-js-中只有-2-种变量作用域，变量的查询会形成一条链式结构，这就形成了作用域链，全局作用域可以在任何地方访问到，然而函数作用域只能在函数内部访问到，外层无法访问；"><span class="toc-number">1.1.</span> <span class="toc-text">在 js 中只有 2 种变量作用域，变量的查询会形成一条链式结构，这就形成了作用域链，全局作用域可以在任何地方访问到，然而函数作用域只能在函数内部访问到，外层无法访问；</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#闭包"><span class="toc-number">2.</span> <span class="toc-text">闭包</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#闭包作为一个链接函数内部与外部的桥梁，可以使得函数外部访问到函数内部的变量，由于变量被外部引用，所以变量会一直存在于内存之中，闭包使用不当会导致内存溢出，程序奔溃。"><span class="toc-number">2.1.</span> <span class="toc-text">闭包作为一个链接函数内部与外部的桥梁，可以使得函数外部访问到函数内部的变量，由于变量被外部引用，所以变量会一直存在于内存之中，闭包使用不当会导致内存溢出，程序奔溃。</span></a></li></ol></li></ol>
     </div>
   </span>
 </div>
@@ -129,13 +132,34 @@
       
 
       
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/javascript/" rel="tag">javascript</a>
+    </div>
+
 
     </div>
   </header>
   
 
   <div class="content" itemprop="articleBody">
-    
+    <h2 id="Javascript-变量作用域"><a href="#Javascript-变量作用域" class="headerlink" title="Javascript 变量作用域"></a>Javascript 变量作用域</h2><ul>
+<li>全局作用域</li>
+<li>函数作用域</li>
+</ul>
+<blockquote>
+<h3 id="在-js-中只有-2-种变量作用域，变量的查询会形成一条链式结构，这就形成了作用域链，全局作用域可以在任何地方访问到，然而函数作用域只能在函数内部访问到，外层无法访问；"><a href="#在-js-中只有-2-种变量作用域，变量的查询会形成一条链式结构，这就形成了作用域链，全局作用域可以在任何地方访问到，然而函数作用域只能在函数内部访问到，外层无法访问；" class="headerlink" title="在 js 中只有 2 种变量作用域，变量的查询会形成一条链式结构，这就形成了作用域链，全局作用域可以在任何地方访问到，然而函数作用域只能在函数内部访问到，外层无法访问；"></a>在 js 中只有 2 种变量作用域，变量的查询会形成一条链式结构，这就形成了作用域链，全局作用域可以在任何地方访问到，然而函数作用域只能在函数内部访问到，外层无法访问；</h3></blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> a = <span class="number">1</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fn</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> b = <span class="number">2</span>;</span><br><span class="line">  <span class="built_in">console</span>.log(a); <span class="comment">// = &gt; 1;任何地方都可访问全局变量（读取的是全局变量的a)</span></span><br><span class="line">&#125;</span><br><span class="line">fn();</span><br><span class="line"><span class="built_in">console</span>.log(b); <span class="comment">//无法访问函数内部变量；</span></span><br></pre></td></tr></table></figure>
+
+<p>上面代码<strong>console.log(a)</strong>会进行变量查询，它会优先在<strong><code>fn()</code></strong>函数内部查询，如果存在同名变量，那么直接返回，停止查询。如果内部没有回继续向外部查询,fn 函数内部不存在会向全局查找，全局存在则返回，不存在返回 undefined</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> a = <span class="number">1</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fn</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> a = <span class="number">2</span>;</span><br><span class="line">  <span class="keyword">let</span> b = <span class="number">2</span>;</span><br><span class="line">  <span class="built_in">console</span>.log(a); <span class="comment">//=&gt;2;访问的是内部变量a;</span></span><br><span class="line">&#125;</span><br><span class="line">fn();</span><br><span class="line"><span class="built_in">console</span>.log(b); <span class="comment">//无法访问函数内部变量</span></span><br></pre></td></tr></table></figure>
+
+<p>上面代码先从内部查询变量<strong><code>a</code></strong>，因为 fn 中存在 a 所有直接返回，结束查询；<br>上面 2 种情形都是无法访问到 fn 内部的变量 b 的， <code>函数外部能够访问到函数内部变量</code>这就是闭包的主要功能。</p>
+<h2 id="闭包"><a href="#闭包" class="headerlink" title="闭包"></a>闭包</h2><blockquote>
+<h3 id="闭包作为一个链接函数内部与外部的桥梁，可以使得函数外部访问到函数内部的变量，由于变量被外部引用，所以变量会一直存在于内存之中，闭包使用不当会导致内存溢出，程序奔溃。"><a href="#闭包作为一个链接函数内部与外部的桥梁，可以使得函数外部访问到函数内部的变量，由于变量被外部引用，所以变量会一直存在于内存之中，闭包使用不当会导致内存溢出，程序奔溃。" class="headerlink" title="闭包作为一个链接函数内部与外部的桥梁，可以使得函数外部访问到函数内部的变量，由于变量被外部引用，所以变量会一直存在于内存之中，闭包使用不当会导致内存溢出，程序奔溃。"></a>闭包作为一个链接函数内部与外部的桥梁，可以使得函数外部访问到函数内部的变量，由于变量被外部引用，所以变量会一直存在于内存之中，闭包使用不当会导致内存溢出，程序奔溃。</h3></blockquote>
+<p>经典的闭包应用场景</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> fns = [];</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> i=<span class="number">0</span>; i&lt;<span class="number">5</span>; i++&gt;)&#123;</span><br><span class="line">    <span class="keyword">var</span> fn = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(i)</span><br><span class="line">    &#125;</span><br><span class="line">    fns.push(fn)</span><br><span class="line">&#125;</span><br><span class="line">fns[<span class="number">0</span>]();<span class="comment">// = &gt; 5;</span></span><br><span class="line">fns[<span class="number">1</span>]();<span class="comment">// = &gt; 5;</span></span><br><span class="line">fns[<span class="number">2</span>]();<span class="comment">// = &gt; 5;</span></span><br><span class="line">fns[<span class="number">3</span>]();<span class="comment">// = &gt; 5;</span></span><br><span class="line">fns[<span class="number">4</span>]();<span class="comment">// = &gt; 5;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> fns = [];</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> i=<span class="number">0</span>; i&lt;<span class="number">5</span>; i++&gt;)&#123;</span><br><span class="line">    <span class="keyword">var</span> fn = (<span class="function"><span class="keyword">function</span>(<span class="params">i</span>)</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">            <span class="built_in">console</span>.log(i)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;)(i)</span><br><span class="line">    fns.push(fn)</span><br><span class="line">&#125;</span><br><span class="line">fns[<span class="number">0</span>]();<span class="comment">// = &gt; 0;</span></span><br><span class="line">fns[<span class="number">1</span>]();<span class="comment">// = &gt; 1;</span></span><br><span class="line">fns[<span class="number">2</span>]();<span class="comment">// = &gt; 2;</span></span><br><span class="line">fns[<span class="number">3</span>]();<span class="comment">// = &gt; 3;</span></span><br><span class="line">fns[<span class="number">4</span>]();<span class="comment">// = &gt; 4;</span></span><br></pre></td></tr></table></figure>
+
   </div>
 </article>
 
@@ -160,7 +184,7 @@
     </div>
 
     <div id="toc-footer" style="display: none">
-      
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Javascript-变量作用域"><span class="toc-number">1.</span> <span class="toc-text">Javascript 变量作用域</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#在-js-中只有-2-种变量作用域，变量的查询会形成一条链式结构，这就形成了作用域链，全局作用域可以在任何地方访问到，然而函数作用域只能在函数内部访问到，外层无法访问；"><span class="toc-number">1.1.</span> <span class="toc-text">在 js 中只有 2 种变量作用域，变量的查询会形成一条链式结构，这就形成了作用域链，全局作用域可以在任何地方访问到，然而函数作用域只能在函数内部访问到，外层无法访问；</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#闭包"><span class="toc-number">2.</span> <span class="toc-text">闭包</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#闭包作为一个链接函数内部与外部的桥梁，可以使得函数外部访问到函数内部的变量，由于变量被外部引用，所以变量会一直存在于内存之中，闭包使用不当会导致内存溢出，程序奔溃。"><span class="toc-number">2.1.</span> <span class="toc-text">闭包作为一个链接函数内部与外部的桥梁，可以使得函数外部访问到函数内部的变量，由于变量被外部引用，所以变量会一直存在于内存之中，闭包使用不当会导致内存溢出，程序奔溃。</span></a></li></ol></li></ol>
     </div>
 
     <div id="share-footer" style="display: none">
