@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="Javascript 事件队列机制（Event-loop）思考以下代码 12345setTimeout(() =&amp;gt; &amp;#123;  console.log(1);&amp;#125;, 0);console.log(2);&#x2F;&#x2F;打印结果 2,1   Javascript 设计之初是服务于浏览器网页，这就导致了它是单线程的原因（与 DOM 操作有关），单线程的弊端在于，如果一个操作很耗时，那么后续的只能">
+<meta name="keywords" content="javascript">
+<meta property="og:type" content="article">
+<meta property="og:title" content="javascript Event-loop">
+<meta property="og:url" content="git@github.com:zhaobo1&#x2F;zhaobo1.github.io.git&#x2F;2019&#x2F;11&#x2F;14&#x2F;javascript-Event-loop&#x2F;index.html">
+<meta property="og:site_name" content="求生之路">
+<meta property="og:description" content="Javascript 事件队列机制（Event-loop）思考以下代码 12345setTimeout(() =&amp;gt; &amp;#123;  console.log(1);&amp;#125;, 0);console.log(2);&#x2F;&#x2F;打印结果 2,1   Javascript 设计之初是服务于浏览器网页，这就导致了它是单线程的原因（与 DOM 操作有关），单线程的弊端在于，如果一个操作很耗时，那么后续的只能">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="&#x2F;images&#x2F;eventloop.jpg">
+<meta property="og:updated_time" content="2019-11-15T01:37:21.646Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="&#x2F;images&#x2F;eventloop.jpg">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>javascript Event-loop</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- persian styles -->
+    
+      <link rel="stylesheet" href="/css/rtl.css">
+    
+    <!-- rss -->
+    
+    
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2019/11/15/javascript%E9%97%AD%E5%8C%85%E7%90%86%E8%A7%A3/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2019/11/13/javascript%E5%AF%B9%E8%B1%A1%E5%86%BB%E7%BB%93/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=git@github.com:zhaobo1/zhaobo1.github.io.git/2019/11/14/javascript-Event-loop/" target="_blank" rel="noopener"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=git@github.com:zhaobo1/zhaobo1.github.io.git/2019/11/14/javascript-Event-loop/&text=javascript Event-loop" target="_blank" rel="noopener"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=git@github.com:zhaobo1/zhaobo1.github.io.git/2019/11/14/javascript-Event-loop/&title=javascript Event-loop" target="_blank" rel="noopener"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=git@github.com:zhaobo1/zhaobo1.github.io.git/2019/11/14/javascript-Event-loop/&is_video=false&description=javascript Event-loop" target="_blank" rel="noopener"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=javascript Event-loop&body=Check out this article: git@github.com:zhaobo1/zhaobo1.github.io.git/2019/11/14/javascript-Event-loop/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=git@github.com:zhaobo1/zhaobo1.github.io.git/2019/11/14/javascript-Event-loop/&title=javascript Event-loop" target="_blank" rel="noopener"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=git@github.com:zhaobo1/zhaobo1.github.io.git/2019/11/14/javascript-Event-loop/&title=javascript Event-loop" target="_blank" rel="noopener"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=git@github.com:zhaobo1/zhaobo1.github.io.git/2019/11/14/javascript-Event-loop/&title=javascript Event-loop" target="_blank" rel="noopener"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=git@github.com:zhaobo1/zhaobo1.github.io.git/2019/11/14/javascript-Event-loop/&title=javascript Event-loop" target="_blank" rel="noopener"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=git@github.com:zhaobo1/zhaobo1.github.io.git/2019/11/14/javascript-Event-loop/&name=javascript Event-loop&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Javascript-事件队列机制（Event-loop）"><span class="toc-number">1.</span> <span class="toc-text">Javascript 事件队列机制（Event-loop）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Javascript-异步编程方式"><span class="toc-number">1.1.</span> <span class="toc-text">Javascript 异步编程方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Javascript-何时执行异步流程，异步流程内部如何处理"><span class="toc-number">1.2.</span> <span class="toc-text">Javascript 何时执行异步流程，异步流程内部如何处理</span></a></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        javascript Event-loop
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">求生之路</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2019-11-14T07:09:07.000Z" itemprop="datePublished">2019-11-14</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/javascript/" rel="tag">javascript</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h2 id="Javascript-事件队列机制（Event-loop）"><a href="#Javascript-事件队列机制（Event-loop）" class="headerlink" title="Javascript 事件队列机制（Event-loop）"></a>Javascript 事件队列机制（Event-loop）</h2><p><strong>思考以下代码</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="number">1</span>);</span><br><span class="line">&#125;, <span class="number">0</span>);</span><br><span class="line"><span class="built_in">console</span>.log(<span class="number">2</span>);</span><br><span class="line"><span class="comment">//打印结果 2,1</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>Javascript 设计之初是服务于浏览器网页，这就导致了它是单线程的原因（与 DOM 操作有关），单线程的弊端在于，如果一个操作很耗时，那么后续的只能等待，为解决此问题，出现了 JS 异步编程</p>
+</blockquote>
+<h3 id="Javascript-异步编程方式"><a href="#Javascript-异步编程方式" class="headerlink" title="Javascript 异步编程方式"></a>Javascript 异步编程方式</h3><ul>
+<li>回调函数</li>
+<li>Promise</li>
+<li>sync/await</li>
+</ul>
+<h3 id="Javascript-何时执行异步流程，异步流程内部如何处理"><a href="#Javascript-何时执行异步流程，异步流程内部如何处理" class="headerlink" title="Javascript 何时执行异步流程，异步流程内部如何处理"></a>Javascript 何时执行异步流程，异步流程内部如何处理</h3><p>js 主线程运行到异步时，会将异步交给对应的模块处理<strong><em>比如遇到 setTimeout，setInterval 时，会交由 timer 模块处理</em></strong>，然后 timer 模块会根据具体的情况，将它们一一推入事件队列，当主线程执行完毕，会主动遍历事件队列，一一取出来<strong><em>严格遵循先进先出的规则</em></strong>逐步执行。</p>
+<p><img src="/images/eventloop.jpg" alt="Pandao editor.md"></p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Javascript-事件队列机制（Event-loop）"><span class="toc-number">1.</span> <span class="toc-text">Javascript 事件队列机制（Event-loop）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Javascript-异步编程方式"><span class="toc-number">1.1.</span> <span class="toc-text">Javascript 异步编程方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Javascript-何时执行异步流程，异步流程内部如何处理"><span class="toc-number">1.2.</span> <span class="toc-text">Javascript 何时执行异步流程，异步流程内部如何处理</span></a></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=git@github.com:zhaobo1/zhaobo1.github.io.git/2019/11/14/javascript-Event-loop/" target="_blank" rel="noopener"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=git@github.com:zhaobo1/zhaobo1.github.io.git/2019/11/14/javascript-Event-loop/&text=javascript Event-loop" target="_blank" rel="noopener"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=git@github.com:zhaobo1/zhaobo1.github.io.git/2019/11/14/javascript-Event-loop/&title=javascript Event-loop" target="_blank" rel="noopener"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=git@github.com:zhaobo1/zhaobo1.github.io.git/2019/11/14/javascript-Event-loop/&is_video=false&description=javascript Event-loop" target="_blank" rel="noopener"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=javascript Event-loop&body=Check out this article: git@github.com:zhaobo1/zhaobo1.github.io.git/2019/11/14/javascript-Event-loop/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=git@github.com:zhaobo1/zhaobo1.github.io.git/2019/11/14/javascript-Event-loop/&title=javascript Event-loop" target="_blank" rel="noopener"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=git@github.com:zhaobo1/zhaobo1.github.io.git/2019/11/14/javascript-Event-loop/&title=javascript Event-loop" target="_blank" rel="noopener"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=git@github.com:zhaobo1/zhaobo1.github.io.git/2019/11/14/javascript-Event-loop/&title=javascript Event-loop" target="_blank" rel="noopener"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=git@github.com:zhaobo1/zhaobo1.github.io.git/2019/11/14/javascript-Event-loop/&title=javascript Event-loop" target="_blank" rel="noopener"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=git@github.com:zhaobo1/zhaobo1.github.io.git/2019/11/14/javascript-Event-loop/&name=javascript Event-loop&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2019 赵 波
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+    <!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+<!-- clipboard -->
+
+  <script src="/lib/clipboard/clipboard.min.js"></script>
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight .code pre").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      target: function(trigger) {
+        return trigger.nextElementSibling;
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>
