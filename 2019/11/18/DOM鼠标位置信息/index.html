@@ -6,16 +6,18 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="HandheldFriendly" content="True">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="鼠标对象（mouseEvent）位置信息- clientX,clientY - offsetX,offsetY - pageX,pageY - screenX,screenY （一）clientX,clientY事件被触发时鼠标指针相对于&#96;浏览器页面（或客服区）的水平&#x2F;垂直坐标&#96;。缩放浏览器不会受到影响。 {% asset_img clientXY.jpg clientX,clientY %} （">
+    <meta name="description" content="鼠标对象（mouseEvent）位置信息- clientX,clientY - offsetX,offsetY - pageX,pageY - screenX,screenY （一）clientX,clientY事件被触发时鼠标指针相对于&#96;浏览器页面（或客服区）的水平&#x2F;垂直坐标&#96;。缩放浏览器不会受到影响。{% asset_img clientXY.jpg clientX,clientY %}">
 <meta name="keywords" content="DOM">
 <meta property="og:type" content="article">
 <meta property="og:title" content="DOM鼠标位置信息">
 <meta property="og:url" content="git@github.com:zhaobo1&#x2F;zhaobo1.github.io.git&#x2F;2019&#x2F;11&#x2F;18&#x2F;DOM%E9%BC%A0%E6%A0%87%E4%BD%8D%E7%BD%AE%E4%BF%A1%E6%81%AF&#x2F;index.html">
 <meta property="og:site_name" content="求生之路">
-<meta property="og:description" content="鼠标对象（mouseEvent）位置信息- clientX,clientY - offsetX,offsetY - pageX,pageY - screenX,screenY （一）clientX,clientY事件被触发时鼠标指针相对于&#96;浏览器页面（或客服区）的水平&#x2F;垂直坐标&#96;。缩放浏览器不会受到影响。 {% asset_img clientXY.jpg clientX,clientY %} （">
+<meta property="og:description" content="鼠标对象（mouseEvent）位置信息- clientX,clientY - offsetX,offsetY - pageX,pageY - screenX,screenY （一）clientX,clientY事件被触发时鼠标指针相对于&#96;浏览器页面（或客服区）的水平&#x2F;垂直坐标&#96;。缩放浏览器不会受到影响。{% asset_img clientXY.jpg clientX,clientY %}">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-11-18T08:48:09.308Z">
+<meta property="og:image" content="&#x2F;2019&#x2F;11&#x2F;18&#x2F;DOM%E9%BC%A0%E6%A0%87%E4%BD%8D%E7%BD%AE%E4%BF%A1%E6%81%AF&#x2F;offsetXY.jpg">
+<meta property="og:updated_time" content="2019-11-18T08:50:41.855Z">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="&#x2F;2019&#x2F;11&#x2F;18&#x2F;DOM%E9%BC%A0%E6%A0%87%E4%BD%8D%E7%BD%AE%E4%BF%A1%E6%81%AF&#x2F;offsetXY.jpg">
     
     
         
@@ -147,12 +149,15 @@
 - offsetX,offsetY
 - pageX,pageY
 - screenX,screenY</code></pre><hr>
-<h3 id="（一）clientX-clientY"><a href="#（一）clientX-clientY" class="headerlink" title="（一）clientX,clientY"></a>（一）clientX,clientY</h3><pre><code>事件被触发时鼠标指针相对于`浏览器页面（或客服区）的水平/垂直坐标`。缩放浏览器不会受到影响。
-{% asset_img clientXY.jpg clientX,clientY %}</code></pre><hr>
-<h3 id="（二）offsetX-offsetY"><a href="#（二）offsetX-offsetY" class="headerlink" title="（二）offsetX,offsetY"></a>（二）offsetX,offsetY</h3><pre><code>事件被触发是鼠标指针相对于`事件源对象的水平/垂直坐标`。缩放浏览器不会受到影响。
-{% asset_img offsetXY.jpg offsetX,offsetY %}</code></pre><hr>
-<h3 id="（三）pageX-pageY"><a href="#（三）pageX-pageY" class="headerlink" title="（三）pageX,pageY"></a>（三）pageX,pageY</h3><pre><code>事件被触发时鼠标指针相对于`文档（document）的水平/垂直坐标`。缩放浏览器不会受到影响。
- {% asset_img pageXY.jpg pageX,pageY %}</code></pre><h3 id="（四）screenX-screenY"><a href="#（四）screenX-screenY" class="headerlink" title="（四）screenX,screenY"></a>（四）screenX,screenY</h3><pre><code>事件被触发时鼠标指针相对于`电脑屏幕的水平/垂直坐标`。缩放浏览器不会受到影响。</code></pre><h3 id="（五）scrollX-scrollY"><a href="#（五）scrollX-scrollY" class="headerlink" title="（五）scrollX,scrollY"></a>（五）scrollX,scrollY</h3><pre><code>滚动条滚动的水平垂直距离。
+<h3 id="（一）clientX-clientY"><a href="#（一）clientX-clientY" class="headerlink" title="（一）clientX,clientY"></a>（一）clientX,clientY</h3><pre><code>事件被触发时鼠标指针相对于`浏览器页面（或客服区）的水平/垂直坐标`。缩放浏览器不会受到影响。</code></pre>{% asset_img clientXY.jpg clientX,clientY %}
+
+<hr>
+<h3 id="（二）offsetX-offsetY"><a href="#（二）offsetX-offsetY" class="headerlink" title="（二）offsetX,offsetY"></a>（二）offsetX,offsetY</h3><pre><code>事件被触发是鼠标指针相对于`事件源对象的水平/垂直坐标`。缩放浏览器不会受到影响。</code></pre><img src="/2019/11/18/DOM%E9%BC%A0%E6%A0%87%E4%BD%8D%E7%BD%AE%E4%BF%A1%E6%81%AF/offsetXY.jpg" class title="offsetX,offsetY">
+
+<hr>
+<h3 id="（三）pageX-pageY"><a href="#（三）pageX-pageY" class="headerlink" title="（三）pageX,pageY"></a>（三）pageX,pageY</h3><pre><code>事件被触发时鼠标指针相对于`文档（document）的水平/垂直坐标`。缩放浏览器不会受到影响。</code></pre>{% asset_img pageXY.jpg pageX,pageY %}
+
+<h3 id="（四）screenX-screenY"><a href="#（四）screenX-screenY" class="headerlink" title="（四）screenX,screenY"></a>（四）screenX,screenY</h3><pre><code>事件被触发时鼠标指针相对于`电脑屏幕的水平/垂直坐标`。缩放浏览器不会受到影响。</code></pre><h3 id="（五）scrollX-scrollY"><a href="#（五）scrollX-scrollY" class="headerlink" title="（五）scrollX,scrollY"></a>（五）scrollX,scrollY</h3><pre><code>滚动条滚动的水平垂直距离。
 pageX = clientX + scrollX;
 pageY = clientY + scrollY;</code></pre>
   </div>
