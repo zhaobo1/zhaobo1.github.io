@@ -1,151 +1,137 @@
 <!DOCTYPE html>
-<html lang=en>
+<html lang="en">
 <head>
-    <!-- so meta -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="HandheldFriendly" content="True">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="Javascript 对象循环的几种方式 for in循环 Object.keys() Object.getOwnPropertyNames() Object.entries()  for in： 遍历对象自身可枚举属性键名  1234let a = &amp;#123; name: &quot;a&quot;, age: 12 &amp;#125;;for (let k in a) &amp;#123;  console.log(k);">
-<meta name="keywords" content="javascript">
-<meta property="og:type" content="article">
-<meta property="og:title" content="javascript中对象循环处理">
-<meta property="og:url" content="git@github.com:zhaobo1&#x2F;zhaobo1.github.io.git&#x2F;2019&#x2F;11&#x2F;13&#x2F;Javascript%E4%B8%AD%E5%AF%B9%E8%B1%A1%E5%BE%AA%E7%8E%AF%E5%A4%84%E7%90%86&#x2F;index.html">
-<meta property="og:site_name" content="求生之路">
-<meta property="og:description" content="Javascript 对象循环的几种方式 for in循环 Object.keys() Object.getOwnPropertyNames() Object.entries()  for in： 遍历对象自身可枚举属性键名  1234let a = &amp;#123; name: &quot;a&quot;, age: 12 &amp;#125;;for (let k in a) &amp;#123;  console.log(k);">
-<meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-11-13T07:52:49.543Z">
-<meta name="twitter:card" content="summary">
-    
-    
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
         
-          
-              <link rel="shortcut icon" href="/images/favicon.ico">
-          
+        javascript中对象循环处理 - undefined
         
-        
-          
-            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
-          
-        
-        
-          
-            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
-          
-        
-    
-    <!-- title -->
-    <title>javascript中对象循环处理</title>
-    <!-- styles -->
-    <link rel="stylesheet" href="/css/style.css">
-    <!-- persian styles -->
-    
-      <link rel="stylesheet" href="/css/rtl.css">
-    
-    <!-- rss -->
-    
-    
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
 </head>
 
-<body class="max-width mx-auto px3 ltr">
-    
-      <div id="header-post">
-  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
-  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
-  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
-  <span id="menu">
-    <span id="nav">
-      <ul>
-         
-          <li><a href="/">Home</a></li>
-         
-          <li><a href="/about/">About</a></li>
-         
-          <li><a href="/archives/">Writing</a></li>
-         
-          <li><a href="/projects_url">Projects</a></li>
-        
-      </ul>
-    </span>
-    <br/>
-    <span id="actions">
-      <ul>
-        
-        <li><a class="icon" href="/2019/11/13/javascript%E5%AF%B9%E8%B1%A1%E5%86%BB%E7%BB%93/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
-        
-        
-        <li><a class="icon" href="/2019/11/12/git%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
-        
-        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
-        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
-      </ul>
-      <span id="i-prev" class="info" style="display:none;">Previous post</span>
-      <span id="i-next" class="info" style="display:none;">Next post</span>
-      <span id="i-top" class="info" style="display:none;">Back to top</span>
-      <span id="i-share" class="info" style="display:none;">Share post</span>
-    </span>
-    <br/>
-    <div id="share" style="display: none">
-      <ul>
-  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=git@github.com:zhaobo1/zhaobo1.github.io.git/2019/11/13/Javascript%E4%B8%AD%E5%AF%B9%E8%B1%A1%E5%BE%AA%E7%8E%AF%E5%A4%84%E7%90%86/" target="_blank" rel="noopener"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="https://twitter.com/share?url=git@github.com:zhaobo1/zhaobo1.github.io.git/2019/11/13/Javascript%E4%B8%AD%E5%AF%B9%E8%B1%A1%E5%BE%AA%E7%8E%AF%E5%A4%84%E7%90%86/&text=javascript中对象循环处理" target="_blank" rel="noopener"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=git@github.com:zhaobo1/zhaobo1.github.io.git/2019/11/13/Javascript%E4%B8%AD%E5%AF%B9%E8%B1%A1%E5%BE%AA%E7%8E%AF%E5%A4%84%E7%90%86/&title=javascript中对象循环处理" target="_blank" rel="noopener"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=git@github.com:zhaobo1/zhaobo1.github.io.git/2019/11/13/Javascript%E4%B8%AD%E5%AF%B9%E8%B1%A1%E5%BE%AA%E7%8E%AF%E5%A4%84%E7%90%86/&is_video=false&description=javascript中对象循环处理" target="_blank" rel="noopener"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="mailto:?subject=javascript中对象循环处理&body=Check out this article: git@github.com:zhaobo1/zhaobo1.github.io.git/2019/11/13/Javascript%E4%B8%AD%E5%AF%B9%E8%B1%A1%E5%BE%AA%E7%8E%AF%E5%A4%84%E7%90%86/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="https://getpocket.com/save?url=git@github.com:zhaobo1/zhaobo1.github.io.git/2019/11/13/Javascript%E4%B8%AD%E5%AF%B9%E8%B1%A1%E5%BE%AA%E7%8E%AF%E5%A4%84%E7%90%86/&title=javascript中对象循环处理" target="_blank" rel="noopener"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://reddit.com/submit?url=git@github.com:zhaobo1/zhaobo1.github.io.git/2019/11/13/Javascript%E4%B8%AD%E5%AF%B9%E8%B1%A1%E5%BE%AA%E7%8E%AF%E5%A4%84%E7%90%86/&title=javascript中对象循环处理" target="_blank" rel="noopener"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=git@github.com:zhaobo1/zhaobo1.github.io.git/2019/11/13/Javascript%E4%B8%AD%E5%AF%B9%E8%B1%A1%E5%BE%AA%E7%8E%AF%E5%A4%84%E7%90%86/&title=javascript中对象循环处理" target="_blank" rel="noopener"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://digg.com/submit?url=git@github.com:zhaobo1/zhaobo1.github.io.git/2019/11/13/Javascript%E4%B8%AD%E5%AF%B9%E8%B1%A1%E5%BE%AA%E7%8E%AF%E5%A4%84%E7%90%86/&title=javascript中对象循环处理" target="_blank" rel="noopener"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://www.tumblr.com/share/link?url=git@github.com:zhaobo1/zhaobo1.github.io.git/2019/11/13/Javascript%E4%B8%AD%E5%AF%B9%E8%B1%A1%E5%BE%AA%E7%8E%AF%E5%A4%84%E7%90%86/&name=javascript中对象循环处理&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
-</ul>
+<body>
 
-    </div>
-    <div id="toc">
-      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Javascript-对象循环的几种方式"><span class="toc-number">1.</span> <span class="toc-text">Javascript 对象循环的几种方式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#for-in："><span class="toc-number">1.1.</span> <span class="toc-text">for in：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Object-keys-："><span class="toc-number">1.2.</span> <span class="toc-text">Object.keys()：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Object-getOwnPropertyNames-："><span class="toc-number">1.3.</span> <span class="toc-text">Object.getOwnPropertyNames()：</span></a></li></ol></li></ol>
-    </div>
-  </span>
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
 </div>
 
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
     
-    <div class="content index py4">
+    <div class="index-left">
+        <div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar ">
+            <!-- <img src="/" /> -->
+            <img
+                src="data:image/jpg;base64,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" />
+        </div>
+        <div class="name">
+            <i>赵 波</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+    <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Javascript-对象循环的几种方式"><span class="toc-text">Javascript 对象循环的几种方式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#for-in："><span class="toc-text">for in：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Object-keys-："><span class="toc-text">Object.keys()：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Object-getOwnPropertyNames-："><span class="toc-text">Object.getOwnPropertyNames()：</span></a></li></ol></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input" />
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
         
-        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-  <header>
-    
-    <h1 class="posttitle" itemprop="name headline">
+
+
+<div class="post-container">
+    <div class="post-title">
         javascript中对象循环处理
-    </h1>
+    </div>
 
-
-
-    <div class="meta">
-      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
-        <span itemprop="name">求生之路</span>
-      </span>
-      
-    <div class="postdate">
-      
-        <time datetime="2019-11-13T05:29:17.000Z" itemprop="datePublished">2019-11-13</time>
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2019-11-13 13:29:17</span></span>
         
-      
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#javascript" title="javascript">javascript</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
     </div>
-
-
-      
-
-      
-    <div class="article-tag">
-        <i class="fas fa-tag"></i>
-        <a class="tag-link" href="/tags/javascript/" rel="tag">javascript</a>
-    </div>
-
-
-    </div>
-  </header>
-  
-
-  <div class="content" itemprop="articleBody">
-    <h2 id="Javascript-对象循环的几种方式"><a href="#Javascript-对象循环的几种方式" class="headerlink" title="Javascript 对象循环的几种方式"></a>Javascript 对象循环的几种方式</h2><ul>
+    <div class="post-content ">
+        <h2 id="Javascript-对象循环的几种方式"><a href="#Javascript-对象循环的几种方式" class="headerlink" title="Javascript 对象循环的几种方式"></a>Javascript 对象循环的几种方式</h2><ul>
 <li><code>for in循环</code></li>
 <li><code>Object.keys()</code></li>
 <li><code>Object.getOwnPropertyNames()</code></li>
@@ -166,121 +152,63 @@
 </ul>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> a = &#123; <span class="attr">age</span>: <span class="number">12</span> &#125;;</span><br><span class="line"><span class="comment">//使用defineProperty给对象添加一个新属性，并设置它的name属性不可枚举</span></span><br><span class="line"><span class="built_in">Object</span>.defineProperty(a, <span class="string">"name"</span>, &#123;</span><br><span class="line">  value: <span class="string">"a"</span>,</span><br><span class="line">  configurable: <span class="literal">true</span>,</span><br><span class="line">  enumerable: <span class="literal">false</span>,</span><br><span class="line">  writable: <span class="literal">true</span></span><br><span class="line">&#125;);</span><br><span class="line"><span class="keyword">let</span> keys = <span class="built_in">Object</span>.getOwnPropertyNames(a); <span class="comment">//['age','name']</span></span><br></pre></td></tr></table></figure>
 
-  </div>
-</article>
-
-
-
         
-          <div id="footer-post-container">
-  <div id="footer-post">
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
 
-    <div id="nav-footer" style="display: none">
-      <ul>
-         
-          <li><a href="/">Home</a></li>
-         
-          <li><a href="/about/">About</a></li>
-         
-          <li><a href="/archives/">Writing</a></li>
-         
-          <li><a href="/projects_url">Projects</a></li>
-        
-      </ul>
-    </div>
-
-    <div id="toc-footer" style="display: none">
-      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Javascript-对象循环的几种方式"><span class="toc-number">1.</span> <span class="toc-text">Javascript 对象循环的几种方式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#for-in："><span class="toc-number">1.1.</span> <span class="toc-text">for in：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Object-keys-："><span class="toc-number">1.2.</span> <span class="toc-text">Object.keys()：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Object-getOwnPropertyNames-："><span class="toc-number">1.3.</span> <span class="toc-text">Object.getOwnPropertyNames()：</span></a></li></ol></li></ol>
-    </div>
-
-    <div id="share-footer" style="display: none">
-      <ul>
-  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=git@github.com:zhaobo1/zhaobo1.github.io.git/2019/11/13/Javascript%E4%B8%AD%E5%AF%B9%E8%B1%A1%E5%BE%AA%E7%8E%AF%E5%A4%84%E7%90%86/" target="_blank" rel="noopener"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="https://twitter.com/share?url=git@github.com:zhaobo1/zhaobo1.github.io.git/2019/11/13/Javascript%E4%B8%AD%E5%AF%B9%E8%B1%A1%E5%BE%AA%E7%8E%AF%E5%A4%84%E7%90%86/&text=javascript中对象循环处理" target="_blank" rel="noopener"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=git@github.com:zhaobo1/zhaobo1.github.io.git/2019/11/13/Javascript%E4%B8%AD%E5%AF%B9%E8%B1%A1%E5%BE%AA%E7%8E%AF%E5%A4%84%E7%90%86/&title=javascript中对象循环处理" target="_blank" rel="noopener"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=git@github.com:zhaobo1/zhaobo1.github.io.git/2019/11/13/Javascript%E4%B8%AD%E5%AF%B9%E8%B1%A1%E5%BE%AA%E7%8E%AF%E5%A4%84%E7%90%86/&is_video=false&description=javascript中对象循环处理" target="_blank" rel="noopener"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="mailto:?subject=javascript中对象循环处理&body=Check out this article: git@github.com:zhaobo1/zhaobo1.github.io.git/2019/11/13/Javascript%E4%B8%AD%E5%AF%B9%E8%B1%A1%E5%BE%AA%E7%8E%AF%E5%A4%84%E7%90%86/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="https://getpocket.com/save?url=git@github.com:zhaobo1/zhaobo1.github.io.git/2019/11/13/Javascript%E4%B8%AD%E5%AF%B9%E8%B1%A1%E5%BE%AA%E7%8E%AF%E5%A4%84%E7%90%86/&title=javascript中对象循环处理" target="_blank" rel="noopener"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://reddit.com/submit?url=git@github.com:zhaobo1/zhaobo1.github.io.git/2019/11/13/Javascript%E4%B8%AD%E5%AF%B9%E8%B1%A1%E5%BE%AA%E7%8E%AF%E5%A4%84%E7%90%86/&title=javascript中对象循环处理" target="_blank" rel="noopener"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=git@github.com:zhaobo1/zhaobo1.github.io.git/2019/11/13/Javascript%E4%B8%AD%E5%AF%B9%E8%B1%A1%E5%BE%AA%E7%8E%AF%E5%A4%84%E7%90%86/&title=javascript中对象循环处理" target="_blank" rel="noopener"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://digg.com/submit?url=git@github.com:zhaobo1/zhaobo1.github.io.git/2019/11/13/Javascript%E4%B8%AD%E5%AF%B9%E8%B1%A1%E5%BE%AA%E7%8E%AF%E5%A4%84%E7%90%86/&title=javascript中对象循环处理" target="_blank" rel="noopener"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://www.tumblr.com/share/link?url=git@github.com:zhaobo1/zhaobo1.github.io.git/2019/11/13/Javascript%E4%B8%AD%E5%AF%B9%E8%B1%A1%E5%BE%AA%E7%8E%AF%E5%A4%84%E7%90%86/&name=javascript中对象循环处理&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
-</ul>
+        <div id="lv-container">
+        </div>
 
     </div>
-
-    <div id="actions-footer">
-        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
-        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
-        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
-        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
-    </div>
-
-  </div>
 </div>
 
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
         
-        <footer id="footer">
-  <div class="footer-left">
-    Copyright &copy; 2019 赵 波
-  </div>
-  <div class="footer-right">
-    <nav>
-      <ul>
-         
-          <li><a href="/">Home</a></li>
-         
-          <li><a href="/about/">About</a></li>
-         
-          <li><a href="/archives/">Writing</a></li>
-         
-          <li><a href="/projects_url">Projects</a></li>
         
-      </ul>
-    </nav>
-  </div>
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>
+        Created By <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud" target="_blank" rel="noopener">AirCloud</a></p>
 </footer>
 
-    </div>
-    <!-- styles -->
-<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
-<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
 
-    <!-- jquery -->
-<script src="/lib/jquery/jquery.min.js"></script>
-<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
-<!-- clipboard -->
-
-  <script src="/lib/clipboard/clipboard.min.js"></script>
-  <script type="text/javascript">
-  $(function() {
-    // copy-btn HTML
-    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
-    btn += '<i class="far fa-clone"></i>';
-    btn += '</span>'; 
-    // mount it!
-    $(".highlight .code pre").before(btn);
-    var clip = new ClipboardJS('.btn-copy', {
-      target: function(trigger) {
-        return trigger.nextElementSibling;
-      }
-    });
-    clip.on('success', function(e) {
-      e.trigger.setAttribute('aria-label', "Copied!");
-      e.clearSelection();
-    })
-  })
-  </script>
-
-<script src="/js/main.js"></script>
-<!-- search -->
-
-<!-- Google Analytics -->
-
-<!-- Baidu Analytics -->
-
-<!-- Disqus Comments -->
 
 
 </body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = ""
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
 </html>

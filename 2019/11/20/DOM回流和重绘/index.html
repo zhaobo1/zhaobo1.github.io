@@ -11,7 +11,7 @@
 
     <title>
         
-        
+        DOM回流和重绘 - undefined
         
     </title>
 
@@ -54,7 +54,7 @@
     </div>
     <div class="contents" id="nav-content">
         <ul>
-            <li  class=active >
+            <li >
                 <a href="/">
                     <i class="iconfont icon-shouye1"></i>
                     <span>主页</span>
@@ -82,6 +82,10 @@
         </ul>
     </div>
     
+    <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#回流与重绘"><span class="toc-text">回流与重绘</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#开局一张图，内容全靠编"><span class="toc-text">开局一张图，内容全靠编</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#渲染流程"><span class="toc-text">渲染流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#渲染树"><span class="toc-text">渲染树</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#总结"><span class="toc-text">总结</span></a></li></ol></li></ol>
+</div>
+    
 </div>
 
 
@@ -105,193 +109,63 @@
     <div class="index-middle">
         <!-- Main Content -->
         
-<div class="post-preview-container" style="min-height: 720px">
-    
-    <div class="post-preview">
-        <div class="post-time">2019-11-20</div>
-        <div class="post-info">
-            <a href="/2019/11/20/DOM回流和重绘/">
-                <h3>
-                    DOM回流和重绘
-                </h3>
-            </a>
-            <p>
-                
-                <span>/</span>
-                
-                <a class="tag" href="/tags/#DOM" title="DOM">DOM</a>
-                <span>/</span>
-                
-                
-            </p>
-        </div>
+
+
+<div class="post-container">
+    <div class="post-title">
+        DOM回流和重绘
     </div>
-    
-    <div class="post-preview">
-        <div class="post-time">2019-11-19</div>
-        <div class="post-info">
-            <a href="/2019/11/19/javascript-XMLHttpRequest/">
-                <h3>
-                    javascript-XMLHttpRequest
-                </h3>
-            </a>
-            <p>
-                
-                <span>/</span>
-                
-                <a class="tag" href="/tags/#javascript" title="javascript">javascript</a>
-                <span>/</span>
-                
-                
-            </p>
-        </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2019-11-20 15:25:56</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#DOM" title="DOM">DOM</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
     </div>
-    
-    <div class="post-preview">
-        <div class="post-time">2019-11-18</div>
-        <div class="post-info">
-            <a href="/2019/11/18/DOM鼠标位置信息/">
-                <h3>
-                    DOM鼠标位置信息
-                </h3>
-            </a>
-            <p>
-                
-                <span>/</span>
-                
-                <a class="tag" href="/tags/#DOM" title="DOM">DOM</a>
-                <span>/</span>
-                
-                
-            </p>
-        </div>
-    </div>
-    
-    <div class="post-preview">
-        <div class="post-time">2019-11-15</div>
-        <div class="post-info">
-            <a href="/2019/11/15/javascript闭包理解/">
-                <h3>
-                    javascript闭包理解
-                </h3>
-            </a>
-            <p>
-                
-                <span>/</span>
-                
-                <a class="tag" href="/tags/#javascript" title="javascript">javascript</a>
-                <span>/</span>
-                
-                
-            </p>
-        </div>
-    </div>
-    
-    <div class="post-preview">
-        <div class="post-time">2019-11-14</div>
-        <div class="post-info">
-            <a href="/2019/11/14/javascript-Event-loop/">
-                <h3>
-                    javascript Event-loop
-                </h3>
-            </a>
-            <p>
-                
-                <span>/</span>
-                
-                <a class="tag" href="/tags/#javascript" title="javascript">javascript</a>
-                <span>/</span>
-                
-                
-            </p>
-        </div>
-    </div>
-    
-    <div class="post-preview">
-        <div class="post-time">2019-11-13</div>
-        <div class="post-info">
-            <a href="/2019/11/13/javascript对象冻结/">
-                <h3>
-                    javascript对象冻结
-                </h3>
-            </a>
-            <p>
-                
-                <span>/</span>
-                
-                <a class="tag" href="/tags/#javascript" title="javascript">javascript</a>
-                <span>/</span>
-                
-                
-            </p>
-        </div>
-    </div>
-    
-    <div class="post-preview">
-        <div class="post-time">2019-11-13</div>
-        <div class="post-info">
-            <a href="/2019/11/13/Javascript中对象循环处理/">
-                <h3>
-                    javascript中对象循环处理
-                </h3>
-            </a>
-            <p>
-                
-                <span>/</span>
-                
-                <a class="tag" href="/tags/#javascript" title="javascript">javascript</a>
-                <span>/</span>
-                
-                
-            </p>
-        </div>
-    </div>
-    
-    <div class="post-preview">
-        <div class="post-time">2019-11-12</div>
-        <div class="post-info">
-            <a href="/2019/11/12/git常用命令/">
-                <h3>
-                    git常用命令
-                </h3>
-            </a>
-            <p>
-                
-                <span>/</span>
-                
-                <a class="tag" href="/tags/#Git" title="Git">Git</a>
-                <span>/</span>
-                
-                
-            </p>
-        </div>
-    </div>
-    
-    <div class="post-preview">
-        <div class="post-time">2019-11-12</div>
-        <div class="post-info">
-            <a href="/2019/11/12/javascript包装对象/">
-                <h3>
-                    javascript包装对象与引用类型对象的区别
-                </h3>
-            </a>
-            <p>
-                
-                <span>/</span>
-                
-                <a class="tag" href="/tags/#javascript" title="javascript">javascript</a>
-                <span>/</span>
-                
-                
-            </p>
-        </div>
-    </div>
-    
-</div>
-<ul class="pager">
-    
-    
+    <div class="post-content ">
+        <h2 id="回流与重绘"><a href="#回流与重绘" class="headerlink" title="回流与重绘"></a>回流与重绘</h2><ul>
+<li>DOM 树</li>
+<li>CSS 树</li>
+<li>渲染树</li>
+<li>回流</li>
+<li>渲染树几何信息（大小，位置）</li>
+<li>绘制</li>
+<li>显示</li>
 </ul>
+<h3 id="开局一张图，内容全靠编"><a href="#开局一张图，内容全靠编" class="headerlink" title="开局一张图，内容全靠编"></a>开局一张图，内容全靠编</h3><blockquote>
+<p>来自 MDN</p>
+<img src="/2019/11/20/DOM%E5%9B%9E%E6%B5%81%E5%92%8C%E9%87%8D%E7%BB%98/render.jpg" class title="json render">
+</blockquote>
+<h3 id="渲染流程"><a href="#渲染流程" class="headerlink" title="渲染流程"></a>渲染流程</h3><ul>
+<li>1：html 解释器解析 html，形成 DOM 树。</li>
+<li>2：css 接收器解析 CSS，形成 CSS 树。</li>
+<li>3：DOM 树和 CSS 树结合形成渲染树（render tree）</li>
+<li>4：对渲染树进行回流获得渲染树的几何位置信息（layout）</li>
+<li>5：绘制（painting）</li>
+<li>6：显示（display）</li>
+</ul>
+<h3 id="渲染树"><a href="#渲染树" class="headerlink" title="渲染树"></a>渲染树</h3><p>只包含可见节点，（script，link，meta）等不会输出到渲染树中，一些通过 css 隐藏的节点，<code>display:none</code>,<code>visibility</code>,<code>opacity</code>，还是会存在于渲染树中，<code>注意display：none；不会显示在渲染树中</code></p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>当元素的几何信息发生改变时，会进行回流，从新生成渲染树，然后重绘，这是必然结果，但脱离文档流的元素几何信息改变时并不会进行回流和重绘。重绘不一定会进行回流，但回流一定触发重绘。</p>
+
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
 
     </div>
 </div>
@@ -331,7 +205,7 @@
     // We expose some of the variables needed by the front end
     window.hexo_search_path = ""
     window.hexo_root = "/"
-    window.isPost = false
+    window.isPost = true
 </script>
 <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
 <script src="/js/index.js"></script>
